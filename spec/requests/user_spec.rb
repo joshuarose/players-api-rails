@@ -18,13 +18,13 @@ describe "Users API", :type => :request do
     end
 
     it "should fail is passwords don't match" do
-      post "/api/user.json", params: { user: attributes_for(:user).merge!(password: "noobar")}
+      post "/api/user.json", params: { user: attributes_for(:user).merge(password: "noobar")}
       expect(response).to have_http_status(:conflict)
     end
 
     it "should fail if user already exists" do
       user = create(:user)
-      post "/api/user.json", params: { user: attributes_for(:user).merge!(password: "noobar")}
+      post "/api/user.json", params: { user: attributes_for(:user).merge(password: "noobar")}
       expect(response).to have_http_status(:conflict)
     end
     
@@ -84,7 +84,7 @@ describe "Users API", :type => :request do
       }
       expect {
         put "/api/user/#{user.id}", params: { user: { first_name: 'Elon', last_name: 'Musk' }}, headers: headers
-      }.to raise_error
+      }.to raise_error(JWT::DecodeError)
     end
     
     it "should update the user data" do
