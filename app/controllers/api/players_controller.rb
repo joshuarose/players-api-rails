@@ -1,3 +1,2 @@
-class Api::PlayersController < ActionController::API
-  
+class Api::PlayersController < ApplicationController
 end

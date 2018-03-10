@@ -2,7 +2,8 @@ require "rails_helper"
 
 describe "Players API", :type => :request do
   context "POST /api/players" do
-    xit "should fail if token not provided" do
+    it "should fail if token not provided" do
+      
     end
 
     xit "should fail if first_name not present" do
