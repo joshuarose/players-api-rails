@@ -1,4 +1,5 @@
 class Player < ApplicationRecord
+  belongs_to :user
   enum handedness: [ :left, :right ]
   validates :first_name, presence: true
   validates :last_name, presence: true

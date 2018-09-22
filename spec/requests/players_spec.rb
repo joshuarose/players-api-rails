@@ -34,7 +34,7 @@ describe "Players API", :type => :request do
     end
 
     it "should fail if player with same name exists" do
-      player = create(:player)
+      player = create(:player, user: @user)
       post "/api/players.json", params: { player: attributes_for(:player)}, headers: @headers
       expect(response).to have_http_status(:conflict)
     end
@@ -54,36 +54,55 @@ describe "Players API", :type => :request do
     end
 
     it "should deliver an empty array if no players" do
-      player_one = create(:player)
-      player_two = create(:player_two)
-      get "/api/players.json", headers: @headers
-      expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      expect(json['players'].size).to eq(2)
-    end
-
-    xit "should deliver all players" do
       get "/api/players.json", headers: @headers
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
       expect(json['players']).to eq([])
     end
 
-    xit "should not deliver players created by other users" do
+    it "should deliver all players" do
+      player_one = create(:player, user: @user)
+      player_two = create(:player_two, user: @user)
+      get "/api/players.json", headers: @headers
+      expect(response).to have_http_status(:ok)
+      json = JSON.parse(response.body)
+      expect(json['players'].size).to eq(2)
+    end
+
+    it "should not deliver players created by other users" do
+      player_one = create(:player, user: @user)
+      player_two = create(:player_two, user: create(:user_two))
+      get "/api/players.json", headers: @headers
+      expect(response).to have_http_status(:ok)
+      json = JSON.parse(response.body)
+      expect(json['players'].size).to eq(1)
     end
   end
 
   context "DELETE /players/:id" do
-    xit "should fail if token not provided" do
+    it "should fail if token not provided" do
+      player_one = create(:player, user: @user)
+      delete "/api/players/#{player_one.id}.json", params: { player: attributes_for(:player)}
+      expect(response).to have_http_status(:unauthorized)
     end
 
-    xit "should fail if player does not exist" do
+    it "should fail if player does not exist" do
+      player_one = create(:player, user: @user)
+      delete "/api/players/99999.json", params: { player: attributes_for(:player)}, headers: @headers
+      expect(response).to have_http_status(:not_found)
     end
 
-    xit "should fail if player created by different user" do
+    it "should fail if player created by different user" do
+      player_one = create(:player, user: @user)
+      player_two = create(:player_two, user: create(:user_two))
+      delete "/api/players/#{player_two.id}.json", params: { player: attributes_for(:player)}, headers: @headers
+      expect(response).to have_http_status(:not_found)
     end
 
-    xit "should remove the player if successful" do
+    it "should remove the player if successful" do
+      player_one = create(:player, user: @user)
+      delete "/api/players/#{player_one.id}.json", params: { player: attributes_for(:player)}, headers: @headers
+      expect(response).to have_http_status(:ok)
     end
   end
 end
