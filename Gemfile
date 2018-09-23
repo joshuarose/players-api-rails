@@ -7,8 +7,7 @@ gem 'rails', '~> 5.2.1'
 gem 'pg', '>= 1.0.0', '< 2.0'
 gem 'puma', '~> 3.11'
 gem 'jbuilder', '~> 2.5'
-gem 'bcrypt', '~> 3.1.7'
-gem 'jwt'
+# Hmm you may need a couple extra gems, I can't wait to see what you use!
 gem 'bootsnap', '>= 1.1.0', require: false
 
 group :development, :test do
