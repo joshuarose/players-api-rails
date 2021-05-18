@@ -5,7 +5,7 @@ ruby '2.5.1'
 
 gem 'rails', '~> 5.2.1'
 gem 'pg', '>= 1.0.0', '< 2.0'
-gem 'puma', '~> 3.11'
+gem 'puma', '~> 4.3'
 gem 'jbuilder', '~> 2.5'
 # Hmm you may need a couple extra gems, I can't wait to see what you use!
 gem 'bootsnap', '>= 1.1.0', require: false
